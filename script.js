@@ -1,58 +1,62 @@
-let attendance = [];
+let attendanceData = [];
 
-// Called when QR is successfully scanned
+// Function triggered on successful scan
 function onScanSuccess(decodedText) {
-
-  // OPTIONAL: prevent duplicate scans
-  if (attendance.some(entry => entry.id === decodedText)) {
-    alert("Already Scanned!");
-    return;
+  // Check for duplicates
+  if (attendanceData.some(entry => entry.id === decodedText)) {
+    return; 
   }
 
-  let now = new Date();
-
-  let record = {
+  const now = new Date();
+  const record = {
     id: decodedText,
     date: now.toLocaleDateString(),
     time: now.toLocaleTimeString()
   };
 
-  attendance.push(record);
+  // Add to data array
+  attendanceData.push(record);
 
-  // Add to table
-  let table = document.getElementById("table");
-  let row = table.insertRow();
+  // Update UI Table (Newest scan at the top)
+  const tableBody = document.getElementById("attendance-body");
+  const row = tableBody.insertRow(0);
 
-  row.insertCell(0).innerText = record.id;
-  row.insertCell(1).innerText = record.date;
-  row.insertCell(2).innerText = record.time;
+  const cellId = row.insertCell(0);
+  const cellDate = row.insertCell(1);
+  const cellTime = row.insertCell(2);
+
+  cellId.innerText = record.id;
+  cellId.className = "scanned-id"; // Applies the brand green color
+  cellDate.innerText = record.date;
+  cellTime.innerText = record.time;
 }
 
-// Start QR Scanner
+// Initialize the QR Scanner
 const html5QrCode = new Html5Qrcode("reader");
+const config = { 
+  fps: 10, 
+  qrbox: { width: 250, height: 250 } 
+};
 
 html5QrCode.start(
-  { facingMode: "environment" },
-  {
-    fps: 10,
-    qrbox: { width: 250, height: 250 }
-  },
+  { facingMode: "environment" }, 
+  config, 
   onScanSuccess,
-  error => {
-    // Ignore scan errors
-  }
+  (error) => { /* Errors ignored for cleaner performance */ }
 );
 
-// Download Excel
+// Function to export table to Excel
 function downloadExcel() {
-  if (attendance.length === 0) {
-    alert("No attendance data to download!");
+  if (attendanceData.length === 0) {
+    alert("No data to export.");
     return;
   }
 
-  let worksheet = XLSX.utils.json_to_sheet(attendance);
-  let workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.json_to_sheet(attendanceData);
+  const workbook = XLSX.utils.book_new();
 
   XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
-  XLSX.writeFile(workbook, "event_attendance.xlsx");
+  
+  // File name using brand name
+  XLSX.writeFile(workbook, "CRT_Attendance_Report.xlsx");
 }
