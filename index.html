@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Event Attendance Scanner</title>
+
+  <!-- QR Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <!-- Excel Export Library -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #reader {
+      width: 300px;
+      margin: auto;
+    }
+    table {
+      margin: auto;
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>📋 Event Attendance Scanner</h2>
+
+  <div id="reader"></div>
+
+  <button onclick="downloadExcel()">⬇ Download Excel</button>
+
+  <table id="table">
+    <tr>
+      <th>Scanned ID</th>
+      <th>Date</th>
+      <th>Time</th>
+    </tr>
+  </table>
+
+  <!-- Your JS file MUST be last -->
+  <script src="script.js"></script>
+
+</body>
+</html>
