@@ -53,7 +53,7 @@
     const now = new Date();
     const date=now.toISOString().split("T")[0]; 
 
-    const file_name='CRT_Attendance_${date}.xlsx';
+    const file_name=`CRT_Attendance_${date}.xlsx`;
 
     const worksheet = XLSX.utils.json_to_sheet(attendanceData);
     const workbook = XLSX.utils.book_new();
