@@ -19,7 +19,7 @@
       text-align: center;
       margin: 0;
       background-color: #BDB7B5;
-      padding-bottom: 80px; 
+      padding-bottom: 80px;
     }
 
     header {
@@ -50,8 +50,6 @@
       border: none;
       font-weight: bold;
       cursor: pointer;
-      position: relative;
-      z-index: 20; 
     }
 
     table {
@@ -73,7 +71,7 @@
       color: var(--dark-blue);
     }
 
-    .footer {
+    footer {
       background-color: var(--bright-orange);
       color: #fff;
       text-align: center;
@@ -82,12 +80,10 @@
       bottom: 0;
       width: 100%;
       font-size: 14px;
-      z-index: 10;
     }
 
-  
     @media (max-width: 768px) {
-      .footer {
+      footer {
         position: static;
       }
     }
@@ -103,31 +99,26 @@
   <div id="reader"></div>
 
   <div style="margin-top: 15px;">
-    <input
-      type="text"
-      id="manualRoll"
-      placeholder="Enter Roll No manually"
-    >
+    <input type="text" id="manualRoll" placeholder="Enter Roll No manually">
     <br>
     <button onclick="addManualEntry()">Add Roll No</button>
   </div>
 
   <button onclick="downloadExcel()">⬇ Download Excel file</button>
 
-<table>
-  <thead>
-    <tr>
-      <th>Roll No</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody id="attendance-body"></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="attendance-body"></tbody>
+  </table>
 
-  <footer class="footer">
+  <footer>
     <p>© 2025 Aditya University | All Rights Reserved | PV</p>
   </footer>
-
 
   <script src="script.js"></script>
 
