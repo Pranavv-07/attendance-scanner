@@ -50,11 +50,15 @@
       alert("No data to export.");
       return;
     }
+    const now = new Date();
+    const date=now.toISOString().split("T")[0]; 
+
+    const file_name='CRT_Attendance_${date}.xlsx';
 
     const worksheet = XLSX.utils.json_to_sheet(attendanceData);
     const workbook = XLSX.utils.book_new();
 
     XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
     
-    XLSX.writeFile(workbook, "CRT_Attendance_Report.xlsx");
+    XLSX.writeFile(workbook,file_name);
   }
