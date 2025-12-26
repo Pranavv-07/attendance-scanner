@@ -3,59 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Aditya University Attendance Scanner system</title>
-  
+  <title>Aditya University Attendance Scanner System</title>
+
+  <!-- Libraries -->
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
-
   <style>
-
     :root {
-      ---dark-blue: #114A8E;
-      ---bright-orange: #EC632A;
-  
+      --dark-blue: #114A8E;
+      --bright-orange: #EC632A;
     }
 
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
-      padding: 0;
       background-color: #BDB7B5;
+      padding-bottom: 80px; /* ✅ space for footer (mobile fix) */
     }
 
-  
     header {
-      background-color: var(---dark-blue);
+      background-color: var(--dark-blue);
       color: white;
       padding: 15px 0;
-      border-bottom: 5px solid;
+      border-bottom: 5px solid var(--bright-orange);
       margin-bottom: 25px;
     }
-
-    h2 {
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: 1px;
-    }
-
 
     #reader {
       width: 300px;
       margin: auto;
-      border: 2px solid var(---bright-orange);
+      border: 2px solid var(--bright-orange);
     }
 
-   
+    input {
+      padding: 10px;
+      font-size: 14px;
+    }
+
     button {
-      margin-top: 20px;
+      margin-top: 15px;
       padding: 12px 30px;
       font-size: 16px;
-      background-color: var(---dark-blue);
+      background-color: var(--dark-blue);
       color: white;
       border: none;
       font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      z-index: 20; /* ✅ clickable on mobile */
     }
 
     table {
@@ -63,41 +60,41 @@
       border-collapse: collapse;
       width: 90%;
       max-width: 500px;
+      background: white;
     }
 
-    th {
-      border: 1px solid var(---dark-blue);
-      background-color: #f9f9f9;
-      color: var(---dark-blue);
-      padding: 10px;
-    }
-
-    td {
-      border: 1px solid #dddddd;
+    th, td {
+      border: 1px solid #ccc;
       padding: 10px;
       font-size: 14px;
     }
 
-    .scanned-id {
-      color: var(---dark-blue);
-      font-weight: bold;
+    th {
+      background: #f9f9f9;
+      color: var(--dark-blue);
     }
+
     .footer {
-  background-color: #EC632A;
-  color: #fff;
-  text-align: center;
-  padding: 12px 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  font-size: 14px;
-}
-    
+      background-color: var(--bright-orange);
+      color: #fff;
+      text-align: center;
+      padding: 12px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 14px;
+      z-index: 10;
+    }
+
+    /* ✅ Mobile footer fix */
+    @media (max-width: 768px) {
+      .footer {
+        position: static;
+      }
+    }
   </style>
 </head>
-<footer class="footer">
-  <p>© 2025 Aditya University all Rights Resereved | PV</p>
-</footer>
+
 <body>
 
   <header>
@@ -105,15 +102,16 @@
   </header>
 
   <div id="reader"></div>
+
   <div style="margin-top: 15px;">
-  <input 
-    type="text" 
-    id="manualRoll" 
-    placeholder="Enter Roll No manually"
-    style="padding:10px; font-size:14px;"
-  >
-  <button onclick="addManualEntry()">Add Roll No</button>
-</div>
+    <input
+      type="text"
+      id="manualRoll"
+      placeholder="Enter Roll No manually"
+    >
+    <br>
+    <button onclick="addManualEntry()">Add Roll No</button>
+  </div>
 
   <button onclick="downloadExcel()">⬇ Download Excel file</button>
 
@@ -125,10 +123,15 @@
         <th>Time</th>
       </tr>
     </thead>
-    <tbody id="attendance-body">
-      </tbody>
+    <tbody id="attendance-body"></tbody>
   </table>
 
+  <footer class="footer">
+    <p>© 2025 Aditya University | All Rights Reserved | PV</p>
+  </footer>
+
+  <!-- External JS -->
   <script src="script.js"></script>
+
 </body>
 </html>
