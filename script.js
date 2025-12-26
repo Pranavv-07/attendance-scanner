@@ -2,7 +2,7 @@ let attendanceData = [];
 
 function onScanSuccess(decodedText) {
   // Check for duplicates
-  if (attendanceData.some(entry => entry.id === decodedText)) {
+  if (attendanceData.some(entry => entry.roll_no === decodedText)) {
     return; 
   }
 
