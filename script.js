@@ -1,7 +1,7 @@
 let attendanceData = [];
 
 function onScanSuccess(decodedText) {
-  // checkDuplicate()
+// DuplicateCheck()
   if (attendanceData.some(entry => entry.roll_no === decodedText)) {
     alert("Already scanned");
     return;
@@ -10,39 +10,14 @@ function onScanSuccess(decodedText) {
   const now = new Date();
   const record = {
     roll_no: decodedText,
-    date: now.toLocaleDateString() 
+    date: now.toLocaleDateString()   
   };
 
-
-  attendanceData.push(record); //pushing intonthe array
-
-  // Add to table
-  const tableBody = document.getElementById("attendance-body");
-  const row = tableBody.insertRow(0);
-
-  const cellId = row.insertCell(0);
-  const cellDate = row.insertCell(1);
-
-  cellId.innerText = record.roll_no;
-  cellId.className = "scanned-id";
-  cellDate.innerText = record.date;
+  attendanceData.push(record);
+  addRow(record);
 }
 
-// Scanner
-const html5QrCode = new Html5Qrcode("reader");
-const config = {
-  fps: 10,
-  qrbox: { width: 250, height: 100 }
-};
-
-html5QrCode.start(
-  { facingMode: "environment" },
-  config,
-  onScanSuccess,
-  () => {}
-);
-
-// Manualentry()
+/* Manual Entry */
 function addManualEntry() {
   const input = document.getElementById("manualRoll");
   const rollNo = input.value.trim();
@@ -60,18 +35,21 @@ function addManualEntry() {
   const now = new Date();
   const record = {
     roll_no: rollNo,
-    date: now.toLocaleDateString() 
+    date: now.toLocaleDateString()   
   };
 
   attendanceData.push(record);
+  addRow(record);
+  input.value = "";
+}
 
+
+function addRow(record) {
   const tableBody = document.getElementById("attendance-body");
   const row = tableBody.insertRow(0);
 
   row.insertCell(0).innerText = record.roll_no;
   row.insertCell(1).innerText = record.date;
-
-  input.value = "";
 }
 
 // DownloadExcel()
