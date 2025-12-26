@@ -3,7 +3,7 @@
   function onScanSuccess(decodedText) {
     // Check for duplicates
     if (attendanceData.some(entry => entry.roll_no === decodedText)) {
-      console.alert("Already scanned");
+      alert("Already scanned");
       return; 
     }
 
