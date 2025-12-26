@@ -44,6 +44,43 @@
     onScanSuccess,
     (error) => {  }
   );
+  function addManualEntry() {
+  const input = document.getElementById("manualRoll");
+  const rollNo = input.value.trim();
+
+  // Empty check
+  if (rollNo === "") {
+    alert("Please enter Roll Number");
+    return;
+  }
+
+  // Duplicate check (same as QR scan)
+  if (attendanceData.some(entry => entry.roll_no === rollNo)) {
+    alert("Already scanned");
+    return;
+  }
+
+  const now = new Date();
+  const record = {
+    roll_no: rollNo,
+    date: now.toLocaleDateString(),
+    time: now.toLocaleTimeString()
+  };
+
+  // Add to array
+  attendanceData.push(record);
+
+  // Add to table
+  const tableBody = document.getElementById("attendance-body");
+  const row = tableBody.insertRow(0);
+
+  row.insertCell(0).innerText = record.roll_no;
+  row.insertCell(1).innerText = record.date;
+  row.insertCell(2).innerText = record.time;
+
+  // Clear textbox
+  input.value = "";
+}
 
   function downloadExcel() {
     if (attendanceData.length === 0) {
