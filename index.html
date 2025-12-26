@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aditya University Attendance Scanner System</title>
 
+  <!-- Libraries -->
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
@@ -19,7 +20,7 @@
       text-align: center;
       margin: 0;
       background-color: #BDB7B5;
-      padding-bottom: 80px;
+      padding-bottom: 80px; /* ✅ space for footer (mobile fix) */
     }
 
     header {
@@ -27,24 +28,22 @@
       color: white;
       padding: 15px 0;
       border-bottom: 5px solid var(--bright-orange);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     #reader {
       width: 300px;
-      margin: 15px auto;
+      margin: auto;
       border: 2px solid var(--bright-orange);
-      background: #fff;
     }
 
     input {
       padding: 10px;
       font-size: 14px;
-      width: 200px;
     }
 
     button {
-      margin-top: 12px;
+      margin-top: 15px;
       padding: 12px 30px;
       font-size: 16px;
       background-color: var(--dark-blue);
@@ -52,6 +51,8 @@
       border: none;
       font-weight: bold;
       cursor: pointer;
+      position: relative;
+      z-index: 20; /* ✅ clickable on mobile */
     }
 
     table {
@@ -81,8 +82,11 @@
       position: fixed;
       bottom: 0;
       width: 100%;
+      font-size: 14px;
+      z-index: 10;
     }
 
+    /* ✅ Mobile footer fix */
     @media (max-width: 768px) {
       .footer {
         position: static;
@@ -93,38 +97,41 @@
 
 <body>
 
-<header>
-  <h2>Aditya University Attendance Scanner System</h2>
-</header>
+  <header>
+    <h2>Aditya University Attendance Scanner System</h2>
+  </header>
 
-<!-- ✅ UNIVERSAL START BUTTON -->
-<button onclick="startScanner()">📷 Start QR Scanner</button>
+  <div id="reader"></div>
 
-<div id="reader"></div>
+  <div style="margin-top: 15px;">
+    <input
+      type="text"
+      id="manualRoll"
+      placeholder="Enter Roll No manually"
+    >
+    <br>
+    <button onclick="addManualEntry()">Add Roll No</button>
+  </div>
 
-<div>
-  <input type="text" id="manualRoll" placeholder="Enter Roll No manually">
-  <br>
-  <button onclick="addManualEntry()">Add Roll No</button>
-</div>
+  <button onclick="downloadExcel()">⬇ Download Excel file</button>
 
-<button onclick="downloadExcel()">⬇ Download Excel file</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Roll No</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="attendance-body"></tbody>
+  </table>
 
-<table>
-  <thead>
-    <tr>
-      <th>Roll No</th>
-      <th>Date</th>
-      <th>Time</th>
-    </tr>
-  </thead>
-  <tbody id="attendance-body"></tbody>
-</table>
+  <footer class="footer">
+    <p>© 2025 Aditya University | All Rights Reserved | PV</p>
+  </footer>
 
-<footer class="footer">
-  <p>© 2025 Aditya University | All Rights Reserved | PV</p>
-</footer>
+  <!-- External JS -->
+  <script src="script.js"></script>
 
-<script src="script.js"></script>
 </body>
 </html>
