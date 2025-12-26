@@ -1,6 +1,5 @@
 let attendanceData = [];
 
-// Function triggered on successful scan
 function onScanSuccess(decodedText) {
   // Check for duplicates
   if (attendanceData.some(entry => entry.id === decodedText)) {
@@ -9,7 +8,7 @@ function onScanSuccess(decodedText) {
 
   const now = new Date();
   const record = {
-    id: decodedText,
+    roll_no: decodedText,
     date: now.toLocaleDateString(),
     time: now.toLocaleTimeString()
   };
@@ -25,7 +24,7 @@ function onScanSuccess(decodedText) {
   const cellDate = row.insertCell(1);
   const cellTime = row.insertCell(2);
 
-  cellId.innerText = record.id;
+  cellId.innerText = record.roll_no;
   cellId.className = "scanned-id"; 
   cellDate.innerText = record.date;
   cellTime.innerText = record.time;
