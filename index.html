@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aditya University Attendance Scanner System</title>
 
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <!-- iOS Camera Support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- FIXED html5-qrcode version (iOS stable) -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
   <style>
@@ -34,6 +38,14 @@
       width: 300px;
       margin: auto;
       border: 2px solid var(--bright-orange);
+      background: black;
+    }
+
+    /* ✅ iOS INLINE VIDEO FIX */
+    #reader video {
+      width: 100% !important;
+      height: auto !important;
+      object-fit: cover;
     }
 
     input {
@@ -96,6 +108,8 @@
     <h2>Aditya University Attendance Scanner System</h2>
   </header>
 
+  <button onclick="startScanner()">📷 Start Scanner</button>
+
   <div id="reader"></div>
 
   <div style="margin-top: 15px;">
@@ -121,6 +135,5 @@
   </footer>
 
   <script src="script.js"></script>
-
 </body>
 </html>
