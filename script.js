@@ -1,6 +1,7 @@
 let attendanceData = [];
+let html5QrCode;
 
-// Called when QR is successfully scanned
+// scanner
 function onScanSuccess(decodedText) {
 
   // Prevent duplicate scans
@@ -9,16 +10,14 @@ function onScanSuccess(decodedText) {
     return;
   }
 
-  let now = new Date();
-
   let record = {
     roll_no: decodedText,
-    date: now.toLocaleDateString()
+    date: new Date().toLocaleDateString()
   };
 
   attendanceData.push(record);
 
-  // Add to table
+  // Add data to table
   let tableBody = document.getElementById("attendance-body");
   let row = tableBody.insertRow(0);
 
@@ -26,7 +25,7 @@ function onScanSuccess(decodedText) {
   row.insertCell(1).innerText = record.date;
 }
 
-/* Manual Entry */
+// addManualEntry()
 function addManualEntry() {
   const input = document.getElementById("manualRoll");
   const rollNo = input.value.trim();
@@ -57,7 +56,7 @@ function addManualEntry() {
   input.value = "";
 }
 
-// Download Excel
+// download_excel()
 function downloadExcel() {
   if (attendanceData.length === 0) {
     alert("No data to export.");
@@ -69,18 +68,24 @@ function downloadExcel() {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
 
   const date = new Date().toISOString().split("T")[0];
-  XLSX.writeFile(workbook, `CRT_Attendance_${date}.xlsx`);
+  XLSX.writeFile(workbook, `CRT_Attendance_${date}.xlsx`); // saves file with dat
 }
 
-// START SCANNER (this was missing earlier)
-const html5QrCode = new Html5Qrcode("reader");
 
-html5QrCode.start(
-  { facingMode: "environment" },
-  {
-    fps: 10,
-    qrbox: { width: 250, height: 100 }
-  },
-  onScanSuccess,
-  () => {}
-);
+function startScanner() {
+  if (html5QrCode) return; 
+
+  html5QrCode = new Html5Qrcode("reader");
+
+  html5QrCode.start(
+    { facingMode: "environment" },
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 100 }
+    },
+    onScanSuccess,
+    () => {}
+  ).catch(err => {
+    alert("Camera error: " + err);
+  });
+}
