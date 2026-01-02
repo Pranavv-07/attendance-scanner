@@ -81,7 +81,7 @@ function startScanner() {
     { facingMode: "environment" },
     {
       fps: 10,
-      qrbox: { width: 350, height: 200 }
+      qrbox: { width: 250, height: 100 }
     },
     onScanSuccess,
     () => {}
@@ -89,4 +89,5 @@ function startScanner() {
     alert("Camera error: " + err);
   });
 }
+
 
