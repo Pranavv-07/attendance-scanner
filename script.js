@@ -1,8 +1,22 @@
 let html5QrCode;
 let isScanning = false;
+let beepUnlocked = false;
+
+function unlockBeep() {
+  const beep = document.getElementById("beep");
+  beep.play().then(() => {
+    beep.pause();
+    beep.currentTime = 0;
+    beepUnlocked = true;
+  }).catch(() => {
+    // iOS will block until user gesture – this is expected
+  });
+}
 
 function startScanner() {
   if (html5QrCode) return;
+
+  unlockBeep(); // 🔓 unlock audio on user click
 
   html5QrCode = new Html5Qrcode("reader");
 
@@ -23,6 +37,13 @@ function onScanSuccess(decodedText) {
   document.getElementById("result").innerText =
     "Scanned: " + decodedText;
 
+  // 🔔 play beep (works on iOS)
+  if (beepUnlocked) {
+    const beep = document.getElementById("beep");
+    beep.currentTime = 0;
+    beep.play();
+  }
+
   // 🔴 CRITICAL iOS FIX
   html5QrCode.stop().then(() => {
     html5QrCode.clear();
@@ -33,7 +54,6 @@ function onScanSuccess(decodedText) {
 }
 
 function onScanError(errorMessage) {
-  // ❌ DO NOT use alert() on iOS
   console.warn("Scan error:", errorMessage);
 }
 
