@@ -1,139 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aditya University Attendance Scanner System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Scanner (iOS Safe)</title>
 
-  <!-- iOS Camera Support -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
-  <!-- FIXED html5-qrcode version (iOS stable) -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.8"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-
+  <!-- CSS (merged here) -->
   <style>
-    :root {
-      --dark-blue: #114A8E;
-      --bright-orange: #EC632A;
-    }
-
     body {
       font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
       text-align: center;
-      margin: 0;
-      background-color: #BDB7B5;
-      padding-bottom: 80px;
+      padding: 20px;
     }
 
-    header {
-      background-color: var(--dark-blue);
-      color: white;
-      padding: 15px 0;
-      border-bottom: 5px solid var(--bright-orange);
-      margin-bottom: 25px;
+    h1 {
+      margin-bottom: 10px;
     }
 
     #reader {
       width: 300px;
-      margin: auto;
-      border: 2px solid var(--bright-orange);
-      background: black;
+      margin: 20px auto;
+      border: 3px solid #0f9d58;
+      border-radius: 10px;
+      background: #000;
     }
 
-    /* ✅ iOS INLINE VIDEO FIX */
-    #reader video {
-      width: 100% !important;
-      height: auto !important;
-      object-fit: cover;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 14px;
+    #result {
+      margin: 15px 0;
+      font-size: 16px;
+      color: #0f9d58;
+      word-break: break-word;
     }
 
     button {
-      margin-top: 15px;
-      padding: 12px 30px;
-      font-size: 16px;
-      background-color: var(--dark-blue);
-      color: white;
+      padding: 10px 20px;
+      margin: 8px;
       border: none;
-      font-weight: bold;
+      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
     }
 
-    table {
-      margin: 30px auto;
-      border-collapse: collapse;
-      width: 90%;
-      max-width: 500px;
-      background: white;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      font-size: 14px;
-    }
-
-    th {
-      background: #f9f9f9;
-      color: var(--dark-blue);
-    }
-
-    footer {
-      background-color: var(--bright-orange);
+    .start-btn {
+      background: #0f9d58;
       color: #fff;
-      text-align: center;
-      padding: 12px 0;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      font-size: 14px;
     }
 
-    @media (max-width: 768px) {
-      footer {
-        position: static;
-      }
+    .restart-btn {
+      background: #1a73e8;
+      color: #fff;
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h2>Aditya University Attendance Scanner System</h2>
-  </header>
-
-  <button onclick="startScanner()">📷 Start Scanner</button>
+  <h1>QR Code Scanner</h1>
 
   <div id="reader"></div>
 
-  <div style="margin-top: 15px;">
-    <input type="text" id="manualRoll" placeholder="Enter Roll No manually">
-    <br>
-    <button onclick="addManualEntry()">Add Roll No</button>
-  </div>
+  <p id="result">Scan a QR code</p>
 
-  <button onclick="downloadExcel()">⬇ Download Excel file</button>
+  <button class="start-btn" onclick="startScanner()">Start Scanner</button>
+  <button class="restart-btn" onclick="restartScanner()">Scan Again</button>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Roll No</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody id="attendance-body"></tbody>
-  </table>
-
-  <footer>
-    <p>© 2025 Aditya University | All Rights Reserved | PV</p>
-  </footer>
-
+  <!-- External JS -->
   <script src="script.js"></script>
+
 </body>
 </html>
