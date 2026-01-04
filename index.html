@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Scanner (iOS Safe)</title>
+  <title>QR Scanner (iOS Safe + Beep)</title>
 
   <!-- html5-qrcode -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
-  <!-- CSS (merged here) -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,10 +15,6 @@
       color: #fff;
       text-align: center;
       padding: 20px;
-    }
-
-    h1 {
-      margin-bottom: 10px;
     }
 
     #reader {
@@ -69,7 +64,12 @@
   <button class="start-btn" onclick="startScanner()">Start Scanner</button>
   <button class="restart-btn" onclick="restartScanner()">Scan Again</button>
 
-  <!-- External JS -->
+  <!-- Hidden beep sound -->
+  <audio id="beep" preload="auto">
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.mp3" type="audio/mpeg">
+  </audio>
+
   <script src="script.js"></script>
 
 </body>
