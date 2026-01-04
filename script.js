@@ -1,64 +1,106 @@
+let attendanceData = [];
 let html5QrCode;
-let isScanning = false;
-let beepUnlocked = false;
 
-function unlockBeep() {
+// scanner
+function onScanSuccess(decodedText) {
+
+  // prevent duplicates (NO alert – iOS safe)
+  if (attendanceData.some(entry => entry.roll_no === decodedText)) {
+    console.warn("Already scanned:", decodedText);
+    return;
+  }
+
+  let record = {
+    roll_no: decodedText,
+    date: new Date().toLocaleDateString()
+  };
+
+  attendanceData.push(record);
+
+  // add to table
+  let tableBody = document.getElementById("attendance-body");
+  let row = tableBody.insertRow(0);
+
+  row.insertCell(0).innerText = record.roll_no;
+  row.insertCell(1).innerText = record.date;
+
+  // 🔔 beep on success
   const beep = document.getElementById("beep");
-  beep.play().then(() => {
-    beep.pause();
-    beep.currentTime = 0;
-    beepUnlocked = true;
-  }).catch(() => {
-    // iOS will block until user gesture – this is expected
+  beep.currentTime = 0;
+  beep.play();
+
+  // 🛑 REQUIRED for iOS – stop scanner after one scan
+  html5QrCode.stop().then(() => {
+    html5QrCode.clear();
+    html5QrCode = null;
   });
 }
 
+// manual entry
+function addManualEntry() {
+  const input = document.getElementById("manualRoll");
+  const rollNo = input.value.trim();
+
+  if (rollNo === "") {
+    alert("Please enter Roll Number");
+    return;
+  }
+
+  if (attendanceData.some(entry => entry.roll_no === rollNo)) {
+    alert("Already scanned");
+    return;
+  }
+
+  let record = {
+    roll_no: rollNo,
+    date: new Date().toLocaleDateString()
+  };
+
+  attendanceData.push(record);
+
+  let tableBody = document.getElementById("attendance-body");
+  let row = tableBody.insertRow(0);
+
+  row.insertCell(0).innerText = record.roll_no;
+  row.insertCell(1).innerText = record.date;
+
+  input.value = "";
+}
+
+// excel download
+function downloadExcel() {
+  if (attendanceData.length === 0) {
+    alert("No data to export.");
+    return;
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(attendanceData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
+
+  const date = new Date().toISOString().split("T")[0];
+  XLSX.writeFile(workbook, `CRT_Attendance_${date}.xlsx`);
+}
+
+// start scanner
 function startScanner() {
   if (html5QrCode) return;
 
-  unlockBeep(); // 🔓 unlock audio on user click
+  // 🔓 unlock audio for iOS
+  document.getElementById("beep").play().catch(() => {});
 
   html5QrCode = new Html5Qrcode("reader");
 
   html5QrCode.start(
     { facingMode: "environment" },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
+    {
+      fps: 10,
+      qrbox: { width: 250, height: 100 }
+    },
     onScanSuccess,
-    onScanError
+    () => {}
   ).catch(err => {
-    console.error("Camera start error:", err);
+    alert("Camera error: " + err);
   });
 }
 
-function onScanSuccess(decodedText) {
-  if (isScanning) return;
-  isScanning = true;
-
-  document.getElementById("result").innerText =
-    "Scanned: " + decodedText;
-
-  // 🔔 play beep (works on iOS)
-  if (beepUnlocked) {
-    const beep = document.getElementById("beep");
-    beep.currentTime = 0;
-    beep.play();
-  }
-
-  // 🔴 CRITICAL iOS FIX
-  html5QrCode.stop().then(() => {
-    html5QrCode.clear();
-    html5QrCode = null;
-  }).catch(err => {
-    console.error("Stop failed:", err);
-  });
-}
-
-function onScanError(errorMessage) {
-  console.warn("Scan error:", errorMessage);
-}
-
-function restartScanner() {
-  isScanning = false;
-  document.getElementById("result").innerText = "Scan a QR code";
-  startScanner();
-}
